@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Atlantic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a3a 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        .animate-slide { animation: slideIn 0.5s ease-out; }
+        
+        /* Navbar - Responsif HP */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            width: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .logo i { color: #6366f1; font-size: 1.4rem; animation: pulse 2s ease-in-out infinite; }
+        .logo-highlight { color: #6366f1; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 0.4rem; 
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.4rem 0.7rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+        }
+        
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .balance-card:hover::before { left: 100%; }
+        .balance-card:active { transform: scale(0.98); }
+        .balance-card i { font-size: 1.2rem; }
+        .balance-info { text-align: right; }
+        .balance-label { font-size: 0.6rem; opacity: 0.8; }
+        .balance-amount { font-size: 0.9rem; font-weight: 700; white-space: nowrap; }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 1rem;
+            width: 100%;
+        }
+        
+        /* Hero - Responsif */
+        .hero { text-align: center; padding: 1.5rem 1rem; animation: slideIn 0.5s ease-out; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .hero-title { font-size: 1.8rem; margin-bottom: 0.75rem; line-height: 1.2; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-subtitle { color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .stat-value { font-size: 1.2rem; font-weight: 700; color: #6366f1; }
+        .stat-label { font-size: 0.7rem; color: #94a3b8; }
+        
+        /* Grid */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        /* Cards - Responsif */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            animation: slideIn 0.5s ease-out;
+        }
+        .card:active { transform: scale(0.99); }
+        
+        .card-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        .card-icon i { font-size: 1.5rem; color: #6366f1; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; color: #94a3b8; font-size: 0.85rem; }
+        
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0 0.75rem;
+            transition: all 0.3s;
+        }
+        .input-wrapper:focus-within { border-color: #6366f1; box-shadow: 0 0 10px rgba(99,102,241,0.3); }
+        .input-prefix { color: #94a3b8; margin-right: 0.5rem; font-size: 0.9rem; }
+        .input-wrapper input, .form-group input {
+            width: 100%;
+            padding: 0.75rem 0;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .input-wrapper input:focus, .form-group input:focus { outline: none; }
+        
+        .quick-amounts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .quick-amount {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+        .quick-amount:hover { background: #6366f1; border-color: #6366f1; transform: scale(1.05); }
+        .quick-amount:active { transform: scale(0.95); }
+        
+        button {
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: inherit;
+        }
+        button:active { transform: scale(0.97); }
+        
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.65rem;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.85rem;
+        }
+        .btn-secondary:hover { background: rgba(99, 102, 241, 0.3); border-color: #6366f1; }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            padding: 0.65rem;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(245,158,11,0.3); }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            padding: 0.65rem;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(239,68,68,0.3); }
+        
+        .qrcode-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .qrcode-container img {
+            width: 180px;
+            height: 180px;
+            max-width: 100%;
+            border-radius: 20px;
+            background: white;
+            padding: 0.8rem;
+            transition: all 0.3s;
+        }
+        .qrcode-container img:active { transform: scale(0.98); }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .status-badge.pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .status-badge.success { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .status-badge.failed, .status-badge.expired, .status-badge.cancelled { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .action-buttons button { flex: 1; min-width: 100px; }
+        
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            animation: slideIn 0.5s ease-out;
+        }
+        .status-input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .status-input-group input {
+            flex: 1;
+            padding: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .status-input-group input::placeholder { color: #94a3b8; }
+        
+        /* Countdown Timer */
+        .countdown-timer {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.6rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .countdown-timer.warning { background: rgba(245, 158, 11, 0.3); color: #f59e0b; animation: pulse 1s ease-in-out infinite; }
+        .countdown-timer.danger { background: rgba(239, 68, 68, 0.3); color: #ef4444; animation: pulse 0.5s ease-in-out infinite; }
+        
+        .toast {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(100px);
+            transition: transform 0.3s;
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .toast.success .toast-icon i { color: #10b981; }
+        .toast.error .toast-icon i { color: #ef4444; }
+        .toast.info .toast-icon i { color: #6366f1; }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #fff;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        .footer { text-align: center; padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 1.5rem; font-size: 0.8rem; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1a1a3a; }
+        ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 4px; }
+        
+        /* Responsive Tablet */
+        @media (min-width: 768px) {
+            .payment-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .hero-title { font-size: 2.5rem; }
+            .container { padding: 1.5rem; }
+            .navbar { padding: 1rem 2rem; }
+            .logo { font-size: 1.5rem; }
+            .balance-card { padding: 0.75rem 1.5rem; }
+            .balance-amount { font-size: 1.2rem; }
+            .qrcode-container img { width: 220px; height: 220px; }
+        }
+        
+        /* Responsive Desktop */
+        @media (min-width: 1024px) {
+            .hero-title { font-size: 3rem; }
+            .qrcode-container img { width: 250px; height: 250px; }
+        }
+        
+        /* Touch friendly */
+        button, .nav-link, .quick-amount, .balance-card {
+            touch-action: manipulation;
+        }
+        
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <i class="fas fa-qrcode"></i>
+        <span>Atlantic<span class="logo-highlight">QRIS</span></span>
+    </div>
+    <div class="nav-links">
+        <a class="nav-link active" onclick="showSection('home')"><i class="fas fa-home"></i> Beranda</a>
+        <a class="nav-link" onclick="showSection('payment')"><i class="fas fa-credit-card"></i> Deposit</a>
+        <a class="nav-link" onclick="showSection('status')"><i class="fas fa-search"></i> Cek Status</a>
+    </div>
+    <div class="balance-card" id="balanceCard" onclick="loadProfile()">
+        <i class="fas fa-wallet"></i>
+        <div class="balance-info">
+            <div class="balance-label">Saldo Atlantic</div>
+            <div class="balance-amount" id="balanceAmount">Rp 0</div>
+        </div>
+    </div>
+    <a class="nav-link" href="/admin-panel.html" target="_blank" style="background: rgba(99,102,241,0.2);"><i class="fas fa-crown"></i> Admin</a>
+</nav>
+
+<div class="container">
+    <!-- Home Section -->
+    <div id="homeSection">
+        <div class="hero">
+            <div class="hero-badge animate-pulse"><i class="fas fa-bolt"></i> QRIS Expired 59:28</div>
+            <h1 class="hero-title">Bayar Mudah dengan <span class="gradient-text">QRIS Atlantic</span></h1>
+            <p class="hero-subtitle">Sistem pembayaran digital dengan auto-deteksi dan notifikasi real-time</p>
+            <div class="hero-stats">
+                <div class="animate-float"><div class="stat-value">✅ Real-time</div><div class="stat-label">Konfirmasi Otomatis</div></div>
+                <div class="animate-float" style="animation-delay: 0.5s;"><div class="stat-value">💳 5+</div><div class="stat-label">Metode Pembayaran</div></div>
+                <div class="animate-float" style="animation-delay: 1s;"><div class="stat-value">🔒 100%</div><div class="stat-label">Aman & Terpercaya</div></div>
+            </div>
+            <button class="btn-primary" onclick="showSection('payment')" style="width: auto; padding: 0.85rem 1.5rem; margin: 0 auto;">
+                <i class="fas fa-arrow-right"></i> Mulai Pembayaran
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Section -->
+    <div id="paymentSection" style="display: none;">
+        <div class="payment-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-wallet"></i></div>
+                <h3>Detail Pembayaran</h3>
+                <div class="form-group">
+                    <label><i class="fas fa-coins"></i> Nominal (Rp)</label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">Rp</span>
+                        <input type="number" id="nominal" placeholder="10.000" min="1000" step="1000" value="10000">
+                    </div>
+                    <div class="quick-amounts">
+                        <button class="quick-amount" data-amount="1000">1K</button>
+                        <button class="quick-amount" data-amount="10000">10K</button>
+                        <button class="quick-amount" data-amount="25000">25K</button>
+                        <button class="quick-amount" data-amount="50000">50K</button>
+                        <button class="quick-amount" data-amount="100000">100K</button>
+                        <button class="quick-amount" data-amount="250000">250K</button>
+                        <button class="quick-amount" data-amount="500000">500K</button>
+                        <button class="quick-amount" data-amount="1000000">1JT</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Nama (Opsional)</label>
+                    <input type="text" id="userName" placeholder="Masukkan nama Anda">
+                </div>
+                <button class="btn-primary" id="createDepositBtn">
+                    <i class="fas fa-qrcode"></i> Buat QRIS Payment
+                </button>
+            </div>
+
+            <div class="card" id="qrcodeCard" style="display: none;">
+                <div class="card-icon"><i class="fas fa-qrcode"></i></div>
+                <h3>Scan QRIS untuk Membayar</h3>
+                <div class="qrcode-container"><img id="qrcodeImage" alt="QR Code"></div>
+                <div class="info-row"><span>ID Transaksi:</span><strong id="depositId">-</strong></div>
+                <div class="info-row"><span>Nominal:</span><strong id="depositNominal">Rp 0</strong></div>
+                <div class="info-row"><span>Status:</span><span class="status-badge pending" id="depositStatus">MENUNGGU</span></div>
+                <div class="action-buttons">
+                    <button class="btn-secondary" id="checkStatusBtn"><i class="fas fa-sync-alt"></i> Cek Status</button>
+                    <button class="btn-danger" id="cancelDepositBtn"><i class="fas fa-times"></i> Batalkan</button>
+                </div>
+                <div class="countdown-timer" id="countdownTimer">
+                    <i class="fas fa-hourglass-half"></i> Sisa Waktu: <span id="timerText">59:28</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Section -->
+    <div id="statusSection" style="display: none;">
+        <div class="status-card">
+            <h3><i class="fas fa-search"></i> Cek Status Pembayaran</h3>
+            <p style="color: #94a3b8; margin-top: 0.5rem; font-size: 0.85rem;">Masukkan ID transaksi untuk mengecek status</p>
+            <div class="status-input-group">
+                <input type="text" id="checkDepositId" placeholder="Masukkan ID Transaksi">
+                <button class="btn-primary" id="checkDepositBtn" style="width: auto; padding: 0 1.5rem;">Cek</button>
+            </div>
+            <div id="statusResult" style="margin-top: 1.5rem; display: none;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2026 Atlantic Payment System</p>
+</div>
+
+<div id="toast" class="toast"><div class="toast-icon"><i class="fas fa-check-circle"></i></div><div class="toast-message"></div></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
